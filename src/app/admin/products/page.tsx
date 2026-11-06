@@ -1,3 +1,4 @@
+
 import ProductActions from "./product-actions";
 import AddProduct from "./add-product";
 import { cookies } from "next/headers";
@@ -5,6 +6,7 @@ import { jwtVerify } from "jose";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import type { Product } from "@prisma/client";
 
 export const instant = false;
 
@@ -30,7 +32,7 @@ export default async function ProductsPage() {
     redirect("/login");
   }
 
-  const products = await prisma.product.findMany({
+  const products: Product[] = await prisma.product.findMany({
     orderBy: { createdAt: "desc" },
   });
 
@@ -95,7 +97,7 @@ export default async function ProductsPage() {
                 </thead>
 
                 <tbody>
-                  {products.map((product) => (
+                  {products.map((product: Product) => (
                     <tr
                       key={product.id}
                       className="border-t border-slate-100"
